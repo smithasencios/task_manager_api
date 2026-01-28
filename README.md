@@ -50,11 +50,6 @@ RESTful API for managing tasks and users, built with Express, TypeScript, and Fi
     - Body: `{ "title": "...", "status": "IN_PROGRESS" }`
 - `DELETE /api/tasks/:id`: Delete a task.
 
-### Users
-- `POST /api/users`: Create a user.
-    - Body: `{ "email": "..." }`
-- `GET /api/users?email=...`: Find a user by email.
-
 ## Architecture
 
 - **Domain**: Entities (`Task`, `User`) and Repository Interfaces.
