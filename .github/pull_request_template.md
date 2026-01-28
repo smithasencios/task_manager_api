@@ -10,7 +10,6 @@
 ## Summary
 - **What & why**:
 - **Context / link to issue**:
-
 ## Changes
 - **Key changes**:
 - **Non-goals / out of scope**:
