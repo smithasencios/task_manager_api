@@ -8,8 +8,9 @@ module.exports = tseslint.config(
   {
     languageOptions: {
       parserOptions: {
-        projectService: true,
         tsconfigRootDir: __dirname,
+        // Use a dedicated TS config so ESLint can type-check both src and tests.
+        project: ["./tsconfig.eslint.json"],
       },
     },
     rules: {
