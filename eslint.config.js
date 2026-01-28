@@ -17,5 +17,20 @@ module.exports = tseslint.config(
       "@typescript-eslint/explicit-function-return-type": "off",
       "@typescript-eslint/no-explicit-any": "warn",
     },
+  },
+  {
+    files: ["**/*.test.ts", "**/*.spec.ts"],
+    languageOptions: {
+      globals: {
+        describe: "readonly",
+        it: "readonly",
+        expect: "readonly",
+        jest: "readonly",
+        beforeEach: "readonly",
+        afterEach: "readonly",
+        beforeAll: "readonly",
+        afterAll: "readonly",
+      },
+    },
   }
 );

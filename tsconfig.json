@@ -38,5 +38,5 @@
     "esModuleInterop": true,
     "resolveJsonModule": true,
   },
-  "exclude": ["node_modules", "dist", "functions"]
+  "exclude": ["node_modules", "dist", "functions", "**/*.test.ts", "**/*.spec.ts"]
 }

@@ -8,7 +8,8 @@
     "start": "node dist/server.js",
     "lint": "eslint src",
     "lint:fix": "eslint src --fix",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
+    "test:watch": "jest --watch",
     "prepare": "husky || true",
     "deploy": "firebase deploy --only functions:api"
   },
@@ -30,7 +31,10 @@
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.15.0",
     "eslint": "^9.15.0",
-    "husky": "^9.1.7"
+    "husky": "^9.1.7",
+    "@types/jest": "^29.5.14",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.2.5"
   },
   "dependencies": {
     "zod": "^3.24.1",
