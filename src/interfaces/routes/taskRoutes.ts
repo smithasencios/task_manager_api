@@ -116,7 +116,7 @@ router.put(
   '/:id',
   validate(taskIdParamSchema, 'params'),
   validate(updateTaskBodySchema, 'body'),
-  (req, res, next) => taskController.update(req, res, next)
+  (req: any, res: any, next: any) => taskController.update(req, res, next)
 );
 
 /**
@@ -141,7 +141,7 @@ router.put(
 router.delete(
   '/:id',
   validate(taskIdParamSchema, 'params'),
-  (req, res, next) => taskController.delete(req, res, next)
+  (req: any, res: any, next: any) => taskController.delete(req, res, next)
 );
 
 export { router as taskRoutes };
