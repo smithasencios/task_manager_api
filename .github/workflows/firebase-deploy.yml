@@ -22,7 +22,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 24
+          node-version: 20
           cache: npm
 
       - name: Install dependencies
@@ -50,5 +50,5 @@ jobs:
       - name: Deploy (Functions only)
         env:
           GOOGLE_APPLICATION_CREDENTIALS: ${{ runner.temp }}/firebase-service-account.json
-        run: npx firebase-tools deploy --only functions:api --project atomtest-f250b --non-interactive
+        run: npx firebase-tools deploy --only functions:api --non-interactive
 
