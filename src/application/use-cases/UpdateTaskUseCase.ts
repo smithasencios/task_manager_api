@@ -1,4 +1,4 @@
-import { Task, TaskProps } from '../../domain/entities/Task';
+import { TaskProps } from '../../domain/entities/Task';
 import { ITaskRepository } from '../../domain/repositories/ITaskRepository';
 
 export class UpdateTaskUseCase {

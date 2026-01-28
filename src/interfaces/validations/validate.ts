@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { ZodSchema, ZodError } from 'zod';
+import { ZodSchema, ZodError, ZodIssue } from 'zod';
 
 export type ValidationSource = 'body' | 'params' | 'query';
 
@@ -19,7 +19,7 @@ export function validate<T>(schema: ZodSchema<T>, source: ValidationSource = 'bo
     const error = result.error as ZodError;
     res.status(400).json({
       error: 'Validation error',
-      details: error.errors.map((e: any) => ({
+      details: error.errors.map((e: ZodIssue) => ({
         path: e.path.join('.'),
         message: e.message,
       })),

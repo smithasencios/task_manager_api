@@ -1,4 +1,4 @@
-import { Router } from 'express';
+import { Router, Request, Response, NextFunction } from 'express';
 import { TaskController } from '../controllers/TaskController';
 import { CreateTaskUseCase } from '../../application/use-cases/CreateTaskUseCase';
 import { GetTasksUseCase } from '../../application/use-cases/GetTasksUseCase';
@@ -11,6 +11,8 @@ import {
   createTaskBodySchema,
   updateTaskBodySchema,
   taskIdParamSchema,
+  type TaskIdParam,
+  type UpdateTaskBody,
 } from '../validations/taskSchemas';
 
 const router = Router();
@@ -116,7 +118,8 @@ router.put(
   '/:id',
   validate(taskIdParamSchema, 'params'),
   validate(updateTaskBodySchema, 'body'),
-  (req: any, res: any, next: any) => taskController.update(req, res, next)
+  (req: Request<TaskIdParam, unknown, UpdateTaskBody>, res: Response, next: NextFunction) =>
+    taskController.update(req, res, next)
 );
 
 /**
@@ -141,7 +144,7 @@ router.put(
 router.delete(
   '/:id',
   validate(taskIdParamSchema, 'params'),
-  (req: any, res: any, next: any) => taskController.delete(req, res, next)
+  (req: Request<TaskIdParam>, res: Response, next: NextFunction) => taskController.delete(req, res, next)
 );
 
 export { router as taskRoutes };

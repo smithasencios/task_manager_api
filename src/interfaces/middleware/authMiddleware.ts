@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
+import { DecodedIdToken } from 'firebase-admin/auth';
 import { FirebaseClient } from '../../infrastructure/firebase/FirebaseClient';
 
 export const authMiddleware = async (req: Request, res: Response, next: NextFunction) => {
@@ -14,7 +15,7 @@ export const authMiddleware = async (req: Request, res: Response, next: NextFunc
     try {
         const decodedToken = await FirebaseClient.getInstance().getAuth().verifyIdToken(token);
         // Attach user to request if needed
-        (req as any).user = decodedToken;
+        (req as Request & { user: DecodedIdToken }).user = decodedToken;
         next();
     } catch (error) {
         console.error('Error verifying token:', error);

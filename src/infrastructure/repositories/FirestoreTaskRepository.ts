@@ -1,5 +1,5 @@
 import { ITaskRepository } from '../../domain/repositories/ITaskRepository';
-import { Task, TaskProps, TaskStatus } from '../../domain/entities/Task';
+import { Task, TaskStatus } from '../../domain/entities/Task';
 import { FirebaseClient } from '../firebase/FirebaseClient';
 
 export class FirestoreTaskRepository implements ITaskRepository {
