@@ -8,6 +8,7 @@ import type {
   UpdateTaskBody,
   TaskIdParam,
 } from '../validations/taskSchemas';
+import { DecodedIdToken } from 'firebase-admin/auth';
 
 export class TaskController {
   constructor(
@@ -15,7 +16,7 @@ export class TaskController {
     private readonly getTasksUseCase: GetTasksUseCase,
     private readonly updateTaskUseCase: UpdateTaskUseCase,
     private readonly deleteTaskUseCase: DeleteTaskUseCase
-  ) {}
+  ) { }
 
   create = async (
     req: Request<object, unknown, CreateTaskBody>,
@@ -23,7 +24,12 @@ export class TaskController {
     next: NextFunction
   ): Promise<void> => {
     try {
-      const task = await this.createTaskUseCase.execute(req.body);
+      const user = (req as unknown as Request & { user: DecodedIdToken }).user;
+      const task = await this.createTaskUseCase.execute({
+        ...req.body,
+        createdBy: user.uid,
+        updatedBy: user.uid,
+      });
       res.status(201).json(task);
     } catch (error) {
       next(error);
@@ -31,12 +37,13 @@ export class TaskController {
   };
 
   getAll = async (
-    _req: Request,
+    req: Request,
     res: Response,
     next: NextFunction
   ): Promise<void> => {
     try {
-      const tasks = await this.getTasksUseCase.execute();
+      const user = (req as unknown as Request & { user: DecodedIdToken }).user;
+      const tasks = await this.getTasksUseCase.execute(user.uid);
       res.json(tasks);
     } catch (error) {
       next(error);
@@ -50,7 +57,8 @@ export class TaskController {
   ): Promise<void> => {
     try {
       const { id } = req.params;
-      await this.updateTaskUseCase.execute(id, req.body);
+      const user = (req as unknown as Request & { user: DecodedIdToken }).user;
+      await this.updateTaskUseCase.execute(id, req.body, user.uid);
       res.status(204).send();
     } catch (error) {
       next(error);

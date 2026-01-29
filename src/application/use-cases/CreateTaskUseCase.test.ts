@@ -18,6 +18,8 @@ describe('CreateTaskUseCase', () => {
       title: 'New task',
       description: 'New description',
       status: TaskStatus.PENDING,
+      createdBy: 'user-1',
+      updatedBy: 'user-1',
     };
     const savedTask = new Task({
       ...props,
@@ -35,6 +37,8 @@ describe('CreateTaskUseCase', () => {
         title: 'New task',
         description: 'New description',
         status: TaskStatus.PENDING,
+        createdBy: 'user-1',
+        updatedBy: 'user-1',
       })
     );
     expect(result).toBe(savedTask);

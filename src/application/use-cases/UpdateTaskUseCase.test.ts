@@ -21,6 +21,8 @@ describe('UpdateTaskUseCase', () => {
       status: TaskStatus.PENDING,
       createdAt: new Date(),
       updatedAt: new Date(),
+      createdBy: 'user-1',
+      updatedBy: 'user-1',
     });
     (mockRepository.findById as jest.Mock).mockResolvedValue(existingTask);
     (mockRepository.update as jest.Mock).mockResolvedValue(undefined);
@@ -28,12 +30,20 @@ describe('UpdateTaskUseCase', () => {
     await useCase.execute('task-1', {
       title: 'New title',
       status: TaskStatus.IN_PROGRESS,
-    });
+    }, 'user-2');
 
     expect(mockRepository.findById).toHaveBeenCalledWith('task-1');
     expect(existingTask.title).toBe('New title');
     expect(existingTask.status).toBe(TaskStatus.IN_PROGRESS);
+    expect(existingTask.updatedBy).toBe('user-2');
     expect(mockRepository.update).toHaveBeenCalledWith(existingTask);
+  });
+
+  it('throws if task not found', async () => {
+    (mockRepository.findById as jest.Mock).mockResolvedValue(null);
+
+    await expect(useCase.execute('task-1', { title: 'New title' }, 'user-2'))
+      .rejects.toThrow('Task not found');
   });
 
 });
