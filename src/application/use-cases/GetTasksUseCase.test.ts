@@ -13,7 +13,8 @@ describe('GetTasksUseCase', () => {
 
   const useCase = new GetTasksUseCase(mockRepository);
 
-  it('returns all tasks from the repository', async () => {
+  it('returns all tasks from the repository for the given user', async () => {
+    const userId = 'user-test-123';
     const tasks = [
       new Task({
         id: '1',
@@ -22,30 +23,26 @@ describe('GetTasksUseCase', () => {
         status: TaskStatus.PENDING,
         createdAt: new Date(),
         updatedAt: new Date(),
-      }),
-      new Task({
-        id: '2',
-        title: 'Task 2',
-        description: 'Desc 2',
-        status: TaskStatus.COMPLETED,
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        createdBy: userId,
+        updatedBy: userId,
       }),
     ];
     (mockRepository.findAll as jest.Mock).mockResolvedValue(tasks);
 
-    const result = await useCase.execute();
+    const result = await useCase.execute(userId);
 
-    expect(mockRepository.findAll).toHaveBeenCalledTimes(1);
-    expect(result).toHaveLength(2);
+    expect(mockRepository.findAll).toHaveBeenCalledWith(userId);
+    expect(result).toHaveLength(1);
     expect(result).toBe(tasks);
   });
 
-  it('returns empty array when repository has no tasks', async () => {
+  it('returns empty array when repository has no tasks for the user', async () => {
+    const userId = 'user-test-123';
     (mockRepository.findAll as jest.Mock).mockResolvedValue([]);
 
-    const result = await useCase.execute();
+    const result = await useCase.execute(userId);
 
+    expect(mockRepository.findAll).toHaveBeenCalledWith(userId);
     expect(result).toEqual([]);
   });
 });

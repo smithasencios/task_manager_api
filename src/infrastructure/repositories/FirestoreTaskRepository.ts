@@ -14,13 +14,19 @@ export class FirestoreTaskRepository implements ITaskRepository {
             status: task.status,
             createdAt: task.createdAt,
             updatedAt: task.updatedAt,
+            createdBy: task.createdBy,
+            updatedBy: task.updatedBy,
         };
         await docRef.set(taskData);
         return new Task({ ...taskData });
     }
 
-    async findAll(): Promise<Task[]> {
-        const snapshot = await this.collection.get();
+    async findAll(userId?: string): Promise<Task[]> {
+        let query: FirebaseFirestore.Query = this.collection;
+        if (userId) {
+            query = query.where('createdBy', '==', userId);
+        }
+        const snapshot = await query.get();
         return snapshot.docs.map((doc) => {
             const data = doc.data();
             return new Task({
@@ -30,6 +36,8 @@ export class FirestoreTaskRepository implements ITaskRepository {
                 status: data.status as TaskStatus,
                 createdAt: data.createdAt.toDate(),
                 updatedAt: data.updatedAt.toDate(),
+                createdBy: data.createdBy,
+                updatedBy: data.updatedBy,
             });
         });
     }
@@ -45,6 +53,8 @@ export class FirestoreTaskRepository implements ITaskRepository {
             status: data.status as TaskStatus,
             createdAt: data.createdAt.toDate(),
             updatedAt: data.updatedAt.toDate(),
+            createdBy: data.createdBy,
+            updatedBy: data.updatedBy,
         });
     }
 
@@ -55,6 +65,7 @@ export class FirestoreTaskRepository implements ITaskRepository {
             description: task.description,
             status: task.status,
             updatedAt: task.updatedAt,
+            updatedBy: task.updatedBy,
         });
     }
 

@@ -5,6 +5,8 @@ describe('Task', () => {
     title: 'Test task',
     description: 'Test description',
     status: TaskStatus.PENDING,
+    createdBy: 'user-1',
+    updatedBy: 'user-1',
   };
 
   describe('constructor', () => {
@@ -15,6 +17,8 @@ describe('Task', () => {
       expect(task.status).toBe(TaskStatus.PENDING);
       expect(task.createdAt).toBeInstanceOf(Date);
       expect(task.updatedAt).toBeInstanceOf(Date);
+      expect(task.createdBy).toBe('user-1');
+      expect(task.updatedBy).toBe('user-1');
     });
 
     it('uses provided id, createdAt, updatedAt when given', () => {
@@ -50,21 +54,24 @@ describe('Task', () => {
     });
 
     it('updates title when provided', () => {
-      task.update({ title: 'Updated title' });
+      task.update({ title: 'Updated title' }, 'user-2');
       expect(task.title).toBe('Updated title');
       expect(task.description).toBe(baseProps.description);
       expect(task.status).toBe(baseProps.status);
+      expect(task.updatedBy).toBe('user-2');
     });
 
     it('updates description when provided', () => {
-      task.update({ description: 'Updated description' });
+      task.update({ description: 'Updated description' }, 'user-2');
       expect(task.description).toBe('Updated description');
       expect(task.title).toBe(baseProps.title);
+      expect(task.updatedBy).toBe('user-2');
     });
 
     it('updates status when provided', () => {
-      task.update({ status: TaskStatus.IN_PROGRESS });
+      task.update({ status: TaskStatus.IN_PROGRESS }, 'user-2');
       expect(task.status).toBe(TaskStatus.IN_PROGRESS);
+      expect(task.updatedBy).toBe('user-2');
     });
 
     it('updates multiple fields and refreshes updatedAt', () => {
@@ -73,16 +80,17 @@ describe('Task', () => {
         title: 'New title',
         description: 'New description',
         status: TaskStatus.COMPLETED,
-      });
+      }, 'user-2');
       expect(task.title).toBe('New title');
       expect(task.description).toBe('New description');
       expect(task.status).toBe(TaskStatus.COMPLETED);
+      expect(task.updatedBy).toBe('user-2');
       expect(task.updatedAt.getTime()).toBeGreaterThanOrEqual(prevUpdatedAt.getTime());
     });
 
     it('does not change createdAt', () => {
       const createdAt = task.createdAt;
-      task.update({ title: 'Changed' });
+      task.update({ title: 'Changed' }, 'user-2');
       expect(task.createdAt).toBe(createdAt);
     });
   });
